@@ -25,7 +25,7 @@ class ScapeRoom(models.Model):
 
 
 class CustomUser(User):
-    birthday = models.DateField(default=datetime.date(datetime.MINYEAR, 1, 1))
+    birthday = models.DateField(default=datetime.date(datetime.today()))
 
     def __unicode__(self):
         return u"%s" % self.get_full_name()
