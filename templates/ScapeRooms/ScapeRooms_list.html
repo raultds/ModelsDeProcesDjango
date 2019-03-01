@@ -1,0 +1,15 @@
+{% extends "ScapeRooms/base.html" %}
+{% block content %}
+    <h1>
+        ScapeRooms
+        {% if user %}(<a href="{% url 'ScapeRooms:scaperoom_create' %}">add</a>){% endif %}
+    </h1>
+    <ul>
+        {% for scaperoom in latest_scape_room_list %}
+            <li><a href="{% url 'ScapeRoom:ScapeRoom_detail' ScapeRoom.id %}">
+                {{ ScapeRoom.name }}</a></li>
+        {% empty %}
+            <li>Sorry, no ScapeRoom registered yet.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
