@@ -1,10 +1,15 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from django.views.generic import DetailView
+from django.urls import reverse
+from django.views.generic import DetailView, CreateView
 
-from ScapeRooms.models import ScapeRoom
+from ScapeRooms.models import ScapeRoom, Opinion, Reservation
 
+def homePage(request):
+    context = None
+    return render(request, 'ScapeRooms/home.html', context)
 
 class ScapeRoomDetail(DetailView):
     model = ScapeRoom
@@ -19,28 +24,28 @@ class ScapeRoomDetail(DetailView):
 class ScapeRoomCreate(CreateView):
     model = ScapeRoom
     template_name = 'scapeRoom/scapeRoom_detail.html'
-    form_class = ScapeRoomForm
+    form_class = Opinion
 
-    def form_valid(self,form):
-        from.instance.user = self.request.user
-        return super(ScapeRoomCreate,self).form_valid(form)
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(ScapeRoomCreate, self).form_valid(form)
 
-def opinion(request,pk):
-    scaperoom = get_object_or_404(ScapeRoom,pk=pk)
-    review = ScapeRoomReview(
-        rating = request.POST['Rating'],
-        comment = request.POST['Comment'],
-        user = request.user,
-        scaperoom = scaperoom)
+
+def opinion(request, pk):
+    scaperoom = get_object_or_404(ScapeRoom, pk=pk)
+    review = Opinion(
+        comment=request.POST['Comment'],
+        user=request.user,
+        scaperoom=scaperoom)
     review.save()
-    return HTTPResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
+    return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
 
-def reservation(request,pk):
-    scaperoom = get_object_or_404(ScapeRoom,pk=pk)
-    review = ScapeRoomReview(
-        rating = request.POST['Rating'],
-        comment = request.POST['Comment'],
-        user = request.user,
-        scaperoom = scaperoom)
+
+def reservation(request, pk):
+    scaperoom = get_object_or_404(ScapeRoom, pk=pk)
+    review = Reservation(
+        date=request.POST['DATE'],
+        user=request.user,
+        scaperoom=scaperoom)
     review.save()
-    return HTTPResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
+    return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
