@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from datetime import date, datetime
+from django import *
 
 
 # Create your models here.
@@ -21,7 +22,7 @@ class ScapeRoom(models.Model):
         return u"%s" % self.name
 
     def get_absolute_url(self):
-        return reverse('ScapeRoom:ScapeRoom detail', kwargs={'pk': self.pk})
+        return reverse('ScapeRoom:scapeRoom_detail', kwargs={'pk': self.pk})
 
 
 class CustomUser(User):
