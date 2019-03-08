@@ -11,41 +11,56 @@ def homePage(request):
     context = None
     return render(request, 'ScapeRooms/home.html', context)
 
-class ScapeRoomDetail(DetailView):
-    model = ScapeRoom
-    template_name = 'scapeRoom/scapeRoom_detail.html'
+def scapeRoomList(request):
+    context = {
+        'title': 'ScapeRoom List',
+        'llista': ScapeRoom.objects.all(),
+    }
+    return render(request, 'ScapeRooms/ScapeRooms_list.html', context)
 
-    def get_context_data(self, **kwargs):
-        context = super(ScapeRoomDetail, self).get_context_data(**kwargs)
-        context['RATING CHOICES'] = ScapeRoomDetail.RATING_CHOICES
-        return context
+def scapeRoomPage(request, scaperoomID):
+    room = ScapeRoom.objects.filter(ScapeRoom.pk)
+    context={
+        'room': room,
+        'title': room.name,
+    }
+    return render(request, 'ScapeRooms/ScapeRoom_detail.html', context)
 
-
-class ScapeRoomCreate(CreateView):
-    model = ScapeRoom
-    template_name = 'scapeRoom/scapeRoom_detail.html'
-    form_class = Opinion
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(ScapeRoomCreate, self).form_valid(form)
-
-
-def opinion(request, pk):
-    scaperoom = get_object_or_404(ScapeRoom, pk=pk)
-    review = Opinion(
-        comment=request.POST['Comment'],
-        user=request.user,
-        scaperoom=scaperoom)
-    review.save()
-    return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
-
-
-def reservation(request, pk):
-    scaperoom = get_object_or_404(ScapeRoom, pk=pk)
-    review = Reservation(
-        date=request.POST['DATE'],
-        user=request.user,
-        scaperoom=scaperoom)
-    review.save()
-    return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
+# class ScapeRoomDetail(DetailView):
+#     model = ScapeRoom
+#     template_name = 'scapeRoom/scapeRoom_detail.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(ScapeRoomDetail, self).get_context_data(**kwargs)
+#         context['RATING CHOICES'] = ScapeRoomDetail.RATING_CHOICES
+#         return context
+#
+#
+# class ScapeRoomCreate(CreateView):
+#     model = ScapeRoom
+#     template_name = 'scapeRoom/scapeRoom_detail.html'
+#     form_class = Opinion
+#
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         return super(ScapeRoomCreate, self).form_valid(form)
+#
+#
+# def opinion(request, pk):
+#     scaperoom = get_object_or_404(ScapeRoom, pk=pk)
+#     review = Opinion(
+#         comment=request.POST['Comment'],
+#         user=request.user,
+#         scaperoom=scaperoom)
+#     review.save()
+#     return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
+#
+#
+# def reservation(request, pk):
+#     scaperoom = get_object_or_404(ScapeRoom, pk=pk)
+#     review = Reservation(
+#         date=request.POST['DATE'],
+#         user=request.user,
+#         scaperoom=scaperoom)
+#     review.save()
+#     return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))

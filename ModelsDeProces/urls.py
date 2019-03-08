@@ -18,13 +18,11 @@ from django.contrib import admin
 from django.urls import path
 
 from ScapeRooms import views
-from ScapeRooms.views import ScapeRoomDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homePage, name="home"),
+    path('list', views.scapeRoomList, name="list"),
+    url(r'^scapeRoom/(?P<pk>\d+)/$', views.scapeRoomPage, name="scapeRoom"),
 
-    url(r'^scapeRooms/(?P<pk>\d+)/$',
-        ScapeRoomDetail.as_view(),
-        name='ScapeRoom_Detail')
 ]
