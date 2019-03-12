@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -46,14 +46,21 @@ def scapeRoomPage(request, scaperoomID):
 #         return super(ScapeRoomCreate, self).form_valid(form)
 #
 #
-# def opinion(request, pk):
-#     scaperoom = get_object_or_404(ScapeRoom, pk=pk)
-#     review = Opinion(
-#         comment=request.POST['Comment'],
-#         user=request.user,
-#         scaperoom=scaperoom)
-#     review.save()
-#     return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
+def opinion (request, pk):
+    model = Opinion
+    review = Opinion(
+        comment=request.POST['Comment'],
+        user=request.user,
+        scaperoom=scaperoom)
+    review.save()
+    return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
+def opinionError(request, pk):
+    try:
+        scaperoom = Opinion.objects.get(ScapeRoom, pk=pk)
+    except Opinion.DoesNotExist:
+        raise Http404("Oppinion doesn't exist")
+    return render(request,'polls/detail.html',{'oppinion': opinionError})
+
 #
 #
 # def reservation(request, pk):
