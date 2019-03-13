@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 
@@ -5,11 +6,13 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import DetailView, CreateView
 
-from ScapeRooms.models import ScapeRoom, Opinion, Reservation
+from ScapeRooms.models import ScapeRoom, Opinion, Reservation, CustomUser
+
 
 def homePage(request):
     context = None
     return render(request, 'ScapeRooms/home.html', context)
+
 
 def scapeRoomList(request):
     context = {
@@ -18,52 +21,40 @@ def scapeRoomList(request):
     }
     return render(request, 'ScapeRooms/ScapeRooms_list.html', context)
 
-def scapeRoomPage(request, scaperoomID):
-    room = ScapeRoom.objects.filter(ScapeRoom.pk)
-    context={
+
+def scapeRoomPage(request, pk):
+    opinions = []
+    room = get_object_or_404(ScapeRoom, pk=pk)
+    opinions.append(Opinion.objects.filter(pk=room.id))
+
+    context = {
         'room': room,
         'title': room.name,
+        'opinions': opinions,
     }
     return render(request, 'ScapeRooms/ScapeRoom_detail.html', context)
 
-# class ScapeRoomDetail(DetailView):
-#     model = ScapeRoom
-#     template_name = 'scapeRoom/scapeRoom_detail.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ScapeRoomDetail, self).get_context_data(**kwargs)
-#         context['RATING CHOICES'] = ScapeRoomDetail.RATING_CHOICES
-#         return context
-#
-#
-# class ScapeRoomCreate(CreateView):
-#     model = ScapeRoom
-#     template_name = 'scapeRoom/scapeRoom_detail.html'
-#     form_class = Opinion
-#
-#     def form_valid(self, form):
-#         form.instance.user = self.request.user
-#         return super(ScapeRoomCreate, self).form_valid(form)
-#
-#
-def opinion (request, pk):
-    model = Opinion
-    review = Opinion(
-        comment=request.POST['Comment'],
-        user=request.user,
-        scaperoom=scaperoom)
-    review.save()
-    return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
 
-def opinionError(request, pk):
-    try:
-        scaperoom = Opinion.objects.get(ScapeRoom, pk=pk)
-    except Opinion.DoesNotExist:
-        raise Http404("Oppinion doesn't exist")
-    return render(request,'polls/detail.html',{'oppinion': opinionError})
+def opinion(request, pk):
+    # model = Opinion
+    # review = Opinion(
+    #     comment=request.POST['Comment'],
+    #     user=request.user,
+    #     scaperoom=ScapeRoom)
+    # review.save()
 
-#
-#
+    opinion = get_object_or_404(Opinion, pk=pk)
+
+    user = get_object_or_404(User, pk=opinion.userID_id)
+
+    context = {
+        'opinion': opinion,
+        'user': user.id,
+    }
+    return render(request, 'ScapeRooms/opinion.html', context)
+
+
+
 # def reservation(request, pk):
 #     scaperoom = get_object_or_404(ScapeRoom, pk=pk)
 #     review = Reservation(

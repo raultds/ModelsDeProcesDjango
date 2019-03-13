@@ -1,0 +1,7 @@
+{%  extends 'ScapeRooms/ScapeRoom_detail.html' %}
+
+{% block opinion %}
+    <h3> Opinions de {{ room.name }}</h3>
+    <h4> {{ opinions.userID }} </h4>
+    <h1>{{ opinions.opinion }}</h1>
+{% endblock %}

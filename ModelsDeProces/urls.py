@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homePage, name="home"),
     path('list', views.scapeRoomList, name="list"),
-    path('', views.opinion, name='oppinion'),
+    url(r'^scapeRoom/(?P<pk>\d+)/opinion', views.opinion, name='opinion'),
     url(r'^scapeRoom/(?P<pk>\d+)/$', views.scapeRoomPage, name="scapeRoom"),
 
 ]
