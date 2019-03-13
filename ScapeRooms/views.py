@@ -54,6 +54,7 @@ def opinion (request, pk):
         scaperoom=scaperoom)
     review.save()
     return HttpResponseRedirect(reverse('ScapeRoom:scapeRoom_detail'))
+
 def opinionError(request, pk):
     try:
         scaperoom = Opinion.objects.get(ScapeRoom, pk=pk)

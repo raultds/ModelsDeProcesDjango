@@ -1,0 +1,20 @@
+body{
+    margin: 0;
+
+}
+header {
+    background: #999999;
+    color: white;
+    padding: 15px 15px 0 15px;
+
+}
+nav ul{
+    margin: 0;
+}
+nav ul li{
+    background: black;
+    color: white;
+    display: inline-block;
+    list-style-type: none;
+    padding: 5px 15px;
+}
