@@ -25,8 +25,8 @@ def scapeRoomList(request):
 def scapeRoomPage(request, pk):
     opinions = []
     room = get_object_or_404(ScapeRoom, pk=pk)
-    opinions.append(Opinion.objects.filter(pk=room.id))
-
+    for object in Opinion.objects.filter(pk=room.id):
+        opinions.append(object)
     context = {
         'room': room,
         'title': room.name,
